@@ -3488,11 +3488,43 @@ run(function()
 		return e
 	end
 
+	local function isSameTeam(ent)
+		if not ent then return false end
+		local myTeam = lplr:GetAttribute('Team')
+		-- attribute team (bedwars)
+		if ent.Character then
+			local theirTeam = ent.Character:GetAttribute('Team')
+			if myTeam ~= nil and theirTeam ~= nil and myTeam == theirTeam then
+				return true
+			end
+		end
+		if ent.Player then
+			if myTeam ~= nil then
+				local pt = ent.Player:GetAttribute('Team')
+				if pt ~= nil and pt == myTeam then
+					return true
+				end
+			end
+			-- Roblox Team object fallback
+			if lplr.Team and ent.Player.Team and lplr.Team == ent.Player.Team then
+				return true
+			end
+			-- friends list optional
+			if isFriend and isFriend(ent.Player) then
+				return true
+			end
+		end
+		return false
+	end
+
 	local function isValidTarget(ent, selfpos, localfacing, halfangle, reach)
 		if ent.Player then
 			if Targets.Players and not Targets.Players.Enabled then return false end
+			if isSameTeam(ent) then return false end
 		elseif ent.NPC then
 			if Targets.NPCs and not Targets.NPCs.Enabled then return false end
+			-- NPCs: respect entitylib team function when present
+			if isSameTeam(ent) then return false end
 		end
 		-- players: don't require Targetable flag (entitylib can leave it false)
 		if not ent.Player and not ent.Targetable then return false end
