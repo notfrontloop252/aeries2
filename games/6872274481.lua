@@ -3421,11 +3421,13 @@ run(function()
 	local function getAttackInterval()
 		local _, sword = getHandSword()
 		local speed = sword and sword.attackSpeed
-		local weapon = math.max((speed and speed > 0 and speed) or 0.3, 0.04)
-		local hits = tonumber(HitReg.Value) or 34
-		local margin = 0.001 + (hits >= 35 and 0.004 or 0)
+		local weapon = math.max((speed and speed > 0 and speed) or 0.3, 0.05)
+		local hits = tonumber(HitReg.Value) or 32
+		if hits > 34 then hits = 34 end
+		-- slower than before: extra delay so hitreg is less aggressive
+		local margin = 0.012
 		local hitReg = 10 / hits - margin
-		return math.min(weapon, math.max(hitReg, 0.02))
+		return math.min(weapon, math.max(hitReg, 0.08))
 	end
 
 	local function applySwingSpeed(track)
@@ -3476,7 +3478,7 @@ run(function()
 		})
 		-- force faster swing tracks after the effect starts
 		task.defer(speedTracksOnHumanoid)
-		task.delay(0.01, speedTracksOnHumanoid)
+		task.delay(0.03, speedTracksOnHumanoid)
 	end
 
 	local function toGameEntity(ent)
@@ -3739,7 +3741,7 @@ run(function()
 				bedwars.ProjectileController:createLocalProjectile(meta, ammo, projectile, shootPosition, id, dir * projSpeed, {drawDurationSeconds = 1})
 			end)
 		end
-		
+		-- Larp Handler path
 		if bedwars.Handler and bedwars.Handler.Get then
 			pcall(function()
 				bedwars.Handler:Get('ProjectileFire'):Fire('CallServerAsync',
@@ -3756,8 +3758,8 @@ run(function()
 			end)
 			return
 		end
-
-        if bedwars.Client and remotes and remotes.ProjectileFire then
+		-- Vape Client remote path
+		if bedwars.Client and remotes and remotes.ProjectileFire then
 			pcall(function()
 				bedwars.Client:Get(remotes.ProjectileFire):CallServerAsync(
 					item.tool,
@@ -3964,6 +3966,7 @@ run(function()
 					end
 				end
 
+				-- EnhancedAura optionally forces Reach/HitBoxes on if those modules exist
 				if EnhancedAura and EnhancedAura.Enabled then
 					if Reach and Reach.Toggle and not Reach.Enabled then
 						enhPrevReach = false
@@ -4015,7 +4018,7 @@ run(function()
 				EntityUtil = nil
 			end
 		end,
-		Tooltip = 'attack nearby player without aiming'
+		Tooltip = 'Larp-style KillAura port — attack nearby players without aiming'
 	})
 
 	Targets = Killaura:CreateTargets({
@@ -4069,8 +4072,8 @@ run(function()
 	})
 	HitReg = Killaura:CreateDropdown({
 		Name = 'Hit reg',
-		List = {'33', '34', '35'},
-		Default = '34'
+		List = {'30', '32', '33', '34'},
+		Default = '32'
 	})
 	SwingAnim = Killaura:CreateToggle({
 		Name = 'Swing animation',
