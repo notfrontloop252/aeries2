@@ -3694,7 +3694,7 @@ run(function()
                                     AttackRemote:FireServer({
                                         weapon = sword.tool,
                                         chargedAttack = {chargeRatio = 0},
-                                        lastSwingServerTimeDelta = 0.1,
+                                        lastSwingServerTimeDelta = 0,
                                         entityInstance = v.Character,
                                         validate = {
                                             raycast = {
@@ -3755,9 +3755,6 @@ run(function()
         Tooltip = 'Attack players around you\nwithout aiming at them.'
     })
 
-    -- ============================================================
-    -- Options
-    -- ============================================================
     Targets = Killaura:CreateTargets({
         Players = true,
         NPCs = true
