@@ -1,6 +1,3 @@
-print("maybe fixed nametag ig")
--- hiyokovape on top
-
 local run = function(func)
 	task.wait()
 	xpcall(func, warn)
@@ -3697,7 +3694,7 @@ run(function()
                                     AttackRemote:FireServer({
                                         weapon = sword.tool,
                                         chargedAttack = {chargeRatio = 0},
-                                        lastSwingServerTimeDelta = 0.5,
+                                        lastSwingServerTimeDelta = 0.1,
                                         entityInstance = v.Character,
                                         validate = {
                                             raycast = {
@@ -3776,15 +3773,15 @@ run(function()
     SwingRange = Killaura:CreateSlider({
         Name = 'Swing range',
         Min = 1,
-        Max = 40,
-        Default = 40,
+        Max = 30,
+        Default = 30,
         Suffix = function(val) return val == 1 and 'stud' or 'studs' end
     })
     
     AttackRange = Killaura:CreateSlider({
         Name = 'Attack range',
         Min = 1,
-        Max = 20,
+        Max = 21,
         Default = 14,
         Suffix = function(val) return val == 1 and 'stud' or 'studs' end
     })
