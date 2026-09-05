@@ -3409,6 +3409,9 @@ run(function()
         AttackRemote = bedwars.Client:Get(remotes.AttackEntity).instance
     end)
 
+    -- ============================================================
+    -- Range Visualiser Logic
+    -- ============================================================
     local visualiserPart = nil
     local visualiserConnection = nil
 
@@ -3474,6 +3477,9 @@ run(function()
         end
     end
 
+    -- ============================================================
+    -- SkywarsCheck Helper
+    -- ============================================================
     local skywarsCheckStartTick = 0
     local SKYWARS_CHECK_DURATION = 60
     local SKYWARS_PLATFORM_RANGE = 30
@@ -3495,6 +3501,9 @@ run(function()
         return distance <= SKYWARS_PLATFORM_RANGE
     end
 
+    -- ============================================================
+    -- Attack Data
+    -- ============================================================
     local function getAttackData()
         if Mouse.Enabled then
             if not inputService:IsMouseButtonPressed(0) then return false end
@@ -3518,6 +3527,9 @@ run(function()
         return sword, meta
     end
 
+    -- ============================================================
+    -- Killaura Module Definition
+    -- ============================================================
     Killaura = vape.Categories.Blatant:CreateModule({
         Name = 'Killaura',
         Function = function(callback)
@@ -3685,7 +3697,7 @@ run(function()
                                     AttackRemote:FireServer({
                                         weapon = sword.tool,
                                         chargedAttack = {chargeRatio = 0},
-                                        lastSwingServerTimeDelta = 0,
+                                        lastSwingServerTimeDelta = 0.5,
                                         entityInstance = v.Character,
                                         validate = {
                                             raycast = {
@@ -3746,6 +3758,9 @@ run(function()
         Tooltip = 'Attack players around you\nwithout aiming at them.'
     })
 
+    -- ============================================================
+    -- Options
+    -- ============================================================
     Targets = Killaura:CreateTargets({
         Players = true,
         NPCs = true
@@ -3769,7 +3784,7 @@ run(function()
     AttackRange = Killaura:CreateSlider({
         Name = 'Attack range',
         Min = 1,
-        Max = 21,
+        Max = 20,
         Default = 14,
         Suffix = function(val) return val == 1 and 'stud' or 'studs' end
     })
